@@ -12,9 +12,82 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id            String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String
-  email         String @unique
-  password_hash String
+model Org {
+  id              String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title           String
+  primary_contact String
+  email           String  @unique
+  password_hash   String
+  description     String?
+  cep             String
+  address         String
+  phone           String
+  latitude        Decimal
+  longitude       Decimal
+  pets            Pet[]
+
+  @@map("orgs")
+}
+
+model Pet {
+  id                    String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                  String
+  description           String
+  age_group             AgeGroup
+  size                  Size
+  energy_level          EnergyLevel
+  independence_level    IndependenceLevel
+  ideal_environment     IdealEnvironment
+  adoption_requirements String[]
+  profile_picture_url   String
+  gallery_photos        PetGalleryPhoto[]
+  org                   Org?              @relation(fields: [org_id], references: [id])
+  org_id                String?           @db.Uuid
+
+  @@map("pets")
+}
+
+model PetGalleryPhoto {
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  image_url String
+
+  pet    Pet    @relation(fields: [pet_id], references: [id])
+  pet_id String @db.Uuid
+
+  @@map("pet_gallery_photos")
+}
+
+enum AgeGroup {
+  PUPPY
+  YOUNG
+  ADULT
+  SENIOR
+}
+
+enum Size {
+  SMALL
+  MEDIUM
+  LARGE
+  EXTRA_LARGE
+}
+
+enum EnergyLevel {
+  VERY_LOW
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+
+enum IndependenceLevel {
+  VERY_DEPENDENT
+  MODERATE
+  INDEPENDENT
+}
+
+enum IdealEnvironment {
+  SMALL_APARTMENT
+  LARGE_APARTMENT
+  HOUSE_WITH_YARD
+  LARGE_OPEN_SPACE
 }

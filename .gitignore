@@ -1,7 +1,14 @@
-# Dependencies
+# Dependencies 
 node_modules
+
+# Build
+build
 
 # Environment
 .env
 
-/generated/prisma
+# Prisma
+prisma/generated
+
+# Tests
+coverage
