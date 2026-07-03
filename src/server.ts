@@ -1,7 +1,5 @@
-import fastify from 'fastify'
+import { app } from '@/app.js'
 import { env } from '@/env/index.js'
-
-const app = fastify()
 
 app
   .listen({
